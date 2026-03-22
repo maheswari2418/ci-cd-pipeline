@@ -539,5 +539,3 @@ Add a notification step to the GitHub Actions workflow:
 ## 📝 License
 
 This project is open source and available under the [MIT License](LICENSE).
-#   c i - c d - p i p e l i n e  
- 
