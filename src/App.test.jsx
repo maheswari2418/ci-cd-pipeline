@@ -5,13 +5,12 @@ import App from './App'
 describe('App', () => {
   it('renders without crashing', () => {
     render(<App />)
-    // Verify the app mounts and renders content
-    expect(document.querySelector('#root') || document.body).toBeTruthy()
+    expect(document.body).toBeTruthy()
   })
 
-  it('renders the Vite + React heading', () => {
+  it('renders the Get started heading', () => {
     render(<App />)
-    const heading = screen.getByText(/Vite \+ React/i)
+    const heading = screen.getByText(/Get started/i)
     expect(heading).toBeTruthy()
   })
 })
