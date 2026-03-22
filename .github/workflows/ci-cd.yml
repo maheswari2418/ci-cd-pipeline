@@ -1,0 +1,147 @@
+# ============================================================
+# GitHub Actions CI/CD Pipeline for React Application
+# ============================================================
+# Triggers on push to main branch
+# Pipeline: Checkout → Install → Lint & Test → Build → Docker → Deploy
+# ============================================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/react-cicd-app
+  APP_PORT: 3000
+
+jobs:
+  # ── Job 1: Build, Test & Lint ──────────────────────────────
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 📥 Install dependencies
+        run: npm ci --silent
+
+      - name: 🔍 Run ESLint
+        run: npm run lint
+
+      - name: 🧪 Run tests
+        run: npm run test
+
+      - name: 🏗️ Build production bundle
+        run: npm run build
+
+      - name: 📤 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  # ── Job 2: Docker Build & Push ─────────────────────────────
+  docker:
+    name: Docker Build & Push
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: ✅ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔐 Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🏷️ Generate image tags
+        id: meta
+        run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          echo "build_tag=${{ env.DOCKER_IMAGE }}:build-${{ github.run_number }}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "latest_tag=${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_OUTPUT
+
+      - name: 🐳 Build & Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.build_tag }}
+            ${{ steps.meta.outputs.latest_tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── Job 3: Deploy to EC2 ───────────────────────────────────
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: docker
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: 🚀 Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Pull the latest image
+            docker pull ${{ env.DOCKER_IMAGE }}:latest
+
+            # Stop and remove old container (if exists)
+            docker stop react-cicd-app || true
+            docker rm react-cicd-app || true
+
+            # Run new container
+            docker run -d \
+              --name react-cicd-app \
+              --restart unless-stopped \
+              -p ${{ env.APP_PORT }}:80 \
+              ${{ env.DOCKER_IMAGE }}:latest
+
+            # Clean up old images
+            docker image prune -f
+
+      - name: ❤️ Health check
+        run: |
+          echo "⏳ Waiting for deployment to stabilize..."
+          sleep 15
+
+          MAX_RETRIES=5
+          DELAY=10
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Attempt $i/$MAX_RETRIES..."
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://${{ secrets.EC2_HOST }}:${{ env.APP_PORT }}" 2>/dev/null || echo "000")
+
+            if [ "$HTTP_STATUS" -eq 200 ]; then
+              echo "✅ Health check passed! (HTTP $HTTP_STATUS)"
+              exit 0
+            fi
+
+            echo "   Received HTTP $HTTP_STATUS — retrying in ${DELAY}s..."
+            sleep $DELAY
+          done
+
+          echo "❌ Health check failed after $MAX_RETRIES attempts"
+          exit 1
