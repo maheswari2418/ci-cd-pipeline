@@ -273,7 +273,7 @@ DOCKER_PASSWORD = your-access-token-from-step-2
 1. Go to [AWS Console → EC2 → Launch Instance](https://console.aws.amazon.com/ec2/)
 2. Configure:
    - **Name**: `react-cicd-server`
-   - **AMI**: Ubuntu 22.04 LTS (free tier)
+   - **AMI**: Amazon Linux 2023 AMI (free tier)
    - **Instance type**: `t2.micro` (free tier)
    - **Key pair**: Create new → Download `.pem` file → **Keep it safe!**
    - **Security Group** — allow these inbound rules:
@@ -293,24 +293,24 @@ DOCKER_PASSWORD = your-access-token-from-step-2
 chmod 400 your-key.pem
 
 # SSH into EC2
-ssh -i your-key.pem ubuntu@<EC2-PUBLIC-IP>
+ssh -i your-key.pem ec2-user@<EC2-PUBLIC-IP>
 ```
 
 Once connected, install Docker:
 
 ```bash
 # Update system packages
-sudo apt update && sudo apt upgrade -y
+sudo yum update -y
 
 # Install Docker
-sudo apt install -y docker.io
+sudo yum install -y docker
 
 # Start Docker and enable on boot
 sudo systemctl start docker
 sudo systemctl enable docker
 
-# Add ubuntu user to docker group (no sudo needed for docker commands)
-sudo usermod -aG docker ubuntu
+# Add ec2-user to docker group (no sudo needed for docker commands)
+sudo usermod -aG docker ec2-user
 
 # Log out and back in for group change to take effect
 exit
@@ -319,7 +319,7 @@ exit
 SSH back in and verify:
 
 ```bash
-ssh -i your-key.pem ubuntu@<EC2-PUBLIC-IP>
+ssh -i your-key.pem ec2-user@<EC2-PUBLIC-IP>
 docker --version    # Should show Docker version
 docker run hello-world   # Test Docker works
 ```
@@ -336,7 +336,7 @@ Add these secrets:
 
 ```
 EC2_HOST     = <your-ec2-public-ip>        (e.g., 54.123.45.67)
-EC2_USERNAME = ubuntu
+EC2_USERNAME = ec2-user
 EC2_SSH_KEY  = <paste entire .pem file contents>
 ```
 
@@ -449,7 +449,7 @@ docker compose down
 |-------|-------|-----|
 | Cannot connect to EC2 | Security group / instance stopped | Check AWS console, verify security group rules |
 | `docker: command not found` | Docker not installed | Follow Step 2 in EC2 setup |
-| `permission denied` for docker | User not in docker group | Run `sudo usermod -aG docker ubuntu`, then log out/in |
+| `permission denied` for docker | User not in docker group | Run `sudo usermod -aG docker ec2-user`, then log out/in |
 | App not accessible on port 3000 | Security group missing rule | Add Custom TCP port 3000 inbound rule |
 
 ---
