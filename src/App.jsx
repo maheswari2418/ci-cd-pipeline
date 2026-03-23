@@ -45,7 +45,7 @@ function App() {
           </div>
           <div className="header-search">
             <input type="text" placeholder="Search products..." id="search-input" />
-            <button className="search-btn" id="search-btn">Search</button>
+            <button className="search-btn" id="search-btn">search</button>
           </div>
           <nav className="header-nav" id="main-nav">
             <a href="#hero" className="nav-link active">HOME</a>
