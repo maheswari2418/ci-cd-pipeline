@@ -10,7 +10,7 @@ describe('App', () => {
 
   it('renders the hero heading', () => {
     render(<App />)
-    const heading = screen.getByText(/Save up to 10%/i)
+    const heading = screen.getByText(/Save upto 10%/i)
     expect(heading).toBeTruthy()
   })
 

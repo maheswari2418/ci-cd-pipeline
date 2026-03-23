@@ -1,4 +1,5 @@
 import './App.css'
+import heroBanner from './assets/hero-banner.png'
 import product1 from './assets/product1.png'
 import product2 from './assets/product2.png'
 import product3 from './assets/product3.png'
@@ -29,10 +30,13 @@ function App() {
       <section className="hero-banner" id="hero">
         <div className="hero-content">
           <p className="hero-subtitle">Made with Natural</p>
-          <h1>Save up to 10%</h1>
-          <h2>On All Products</h2>
-          <p>Save more today with us — pure, organic, sustainable.</p>
+          <h1>Save upto 10%</h1>
+          <h2>On all products</h2>
+          <p>Save more today with us</p>
           <button className="btn-primary" id="shop-now-btn">Shop Now</button>
+        </div>
+        <div className="hero-image">
+          <img src={heroBanner} alt="Natural eco-friendly products" />
         </div>
       </section>
 
