@@ -1,4 +1,148 @@
 /* ============================================================
+   Top Announcement Bar
+   ============================================================ */
+.top-bar {
+  background: #2d6a4f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 40px;
+  font-size: 0.82rem;
+}
+
+.top-bar p {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.top-bar-badges {
+  display: flex;
+  gap: 12px;
+}
+
+.eco-badge {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================================
+   Navigation Header
+   ============================================================ */
+.main-header {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-logo img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-search {
+  display: flex;
+  flex: 1;
+  max-width: 320px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.header-search input {
+  flex: 1;
+  padding: 8px 14px;
+  border: none;
+  outline: none;
+  font-size: 0.88rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+}
+
+.header-search input::placeholder {
+  color: #aaa;
+}
+
+.search-btn {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: var(--transition);
+  font-family: 'Inter', sans-serif;
+}
+
+.search-btn:hover {
+  background: #2a2a4e;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: var(--transition);
+  letter-spacing: 0.5px;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background: rgba(45, 106, 79, 0.06);
+}
+
+.nav-link.active {
+  color: #e67e22;
+}
+
+.header-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.icon-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.icon-btn:hover {
+  background: rgba(45, 106, 79, 0.08);
+  color: var(--primary);
+}
+
+/* ============================================================
    Hero Banner
    ============================================================ */
 .hero-banner {
@@ -412,6 +556,41 @@
    Responsive
    ============================================================ */
 @media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 16px;
+    text-align: center;
+  }
+
+  .main-header {
+    padding: 10px 16px;
+  }
+
+  .header-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-search {
+    order: 5;
+    max-width: 100%;
+    flex-basis: 100%;
+  }
+
+  .header-nav {
+    order: 4;
+    flex-basis: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .nav-link {
+    font-size: 0.78rem;
+    padding: 6px 10px;
+  }
+
   .hero-banner {
     flex-direction: column;
     padding: 30px 20px 0;
@@ -445,3 +624,4 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
+

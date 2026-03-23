@@ -1,4 +1,5 @@
 import './App.css'
+import logo from './assets/logo.png'
 import heroBanner from './assets/hero-banner.png'
 import product1 from './assets/product1.png'
 import product2 from './assets/product2.png'
@@ -26,6 +27,47 @@ const testimonials = [
 function App() {
   return (
     <>
+      {/* ── Top Announcement Bar ──────────────────────────── */}
+      <div className="top-bar" id="top-bar">
+        <p>The products all are made with natural and sustainable</p>
+        <div className="top-bar-badges">
+          <span className="eco-badge">🌿 Eco</span>
+          <span className="eco-badge">♻️ Sustainable</span>
+          <span className="eco-badge">🏷️ 100% Natural</span>
+        </div>
+      </div>
+
+      {/* ── Navigation Header ─────────────────────────────── */}
+      <header className="main-header" id="main-header">
+        <div className="header-container">
+          <div className="header-logo">
+            <img src={logo} alt="Eco-Alchemy" />
+          </div>
+          <div className="header-search">
+            <input type="text" placeholder="Search products..." id="search-input" />
+            <button className="search-btn" id="search-btn">Search</button>
+          </div>
+          <nav className="header-nav" id="main-nav">
+            <a href="#hero" className="nav-link active">HOME</a>
+            <a href="#products" className="nav-link">SHOP</a>
+            <a href="#testimonials" className="nav-link">BLOG</a>
+            <a href="#deals" className="nav-link">ABOUT</a>
+            <a href="#promo" className="nav-link">CONTACT</a>
+          </nav>
+          <div className="header-icons">
+            <button className="icon-btn" aria-label="Wishlist">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button className="icon-btn" aria-label="Account">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </button>
+            <button className="icon-btn" aria-label="Cart">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
       {/* ── Hero Banner ───────────────────────────────────── */}
       <section className="hero-banner" id="hero">
         <div className="hero-content">
