@@ -1,4 +1,5 @@
 # 🚀 React CI/CD Pipeline — Docker + GitHub Actions + AWS EC2
+<img width="1536" height="1024" alt="cicd" src="https://github.com/user-attachments/assets/d57f9b5a-bf96-43cd-abc9-3224eee44d02" />
 
 A **production-ready CI/CD pipeline** that automatically builds, tests, and deploys a Dockerized React application to AWS EC2 using GitHub Actions.
 
