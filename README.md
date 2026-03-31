@@ -123,7 +123,7 @@ The app itself is a starter React app with a counter, links, and social icons. I
 
 ---
 
-## 4. 🐳 Dockerfile Explained
+## 4. 🐳 Dockerfile Explained with Multi stage build
 
 The Dockerfile uses a **multi-stage build** — this is a production best practice that reduces the final image size from ~1GB to ~25MB.
 
