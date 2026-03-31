@@ -477,7 +477,7 @@ docker compose down
 ### Key Technical Terms to Mention
 
 - **CI/CD** — Continuous Integration / Continuous Deployment
-- **Multi-stage Docker build** — Smaller, more secure images
+- **Multi-stage Docker build** — Smaller, more secure images,optimal 
 - **Docker Hub** — Container image registry
 - **GitHub Actions** — CI/CD platform integrated with GitHub
 - **Nginx** — Production web server with gzip, caching, SPA support
