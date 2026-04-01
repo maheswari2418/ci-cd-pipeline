@@ -26,7 +26,7 @@ A **production-ready CI/CD pipeline** that automatically builds, tests, and depl
 Developer → GitHub (push) → GitHub Actions → Docker Hub → AWS EC2
 ```
 
-### Pipeline Flow Diagram
+### Pipeline WorkFlow Diagram
 
 ```
 ┌──────────┐     ┌──────────┐     ┌──────────────────────────────┐
